@@ -3,6 +3,7 @@ import { HelmetProvider } from 'react-helmet-async'
 import SmoothScroll from '@/components/layout/SmoothScroll'
 import Navigation from '@/components/layout/Navigation'
 import Footer from '@/components/layout/Footer'
+import ChatBot from '@/components/ui/ChatBot'
 import HomePage from '@/pages/HomePage'
 
 export default function App() {
@@ -17,6 +18,7 @@ export default function App() {
             </Routes>
           </main>
           <Footer />
+          <ChatBot />
         </SmoothScroll>
       </BrowserRouter>
     </HelmetProvider>
