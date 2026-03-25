@@ -92,7 +92,7 @@ export default function About() {
               <GlassCard variant="dark" className="p-8 w-full">
                 <div className="space-y-8">
                   {[
-                    { value: '5+', label: 'Proyectos Realizados' },
+                    { value: '35+', label: 'Proyectos Realizados' },
                     { value: '35+', label: 'Años de Experiencia Combinada' },
                     { value: 'BIM', label: 'Metodología de Trabajo' },
                   ].map((stat, i) => (
