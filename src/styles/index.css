@@ -1,0 +1,199 @@
+@import "tailwindcss";
+
+/* ========================================
+   FONTS - Google Fonts with full Latin Extended support (ñ, á, é, í, ó, ú)
+   ======================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@300;400;500;600&display=swap');
+
+/* ========================================
+   TAILWIND THEME
+   ======================================== */
+
+@theme {
+  /* Brand Colors */
+  --color-brand-dark: #17384D;
+  --color-brand-dark-90: rgba(23, 56, 77, 0.9);
+  --color-brand-dark-70: rgba(23, 56, 77, 0.7);
+  --color-brand-dark-50: rgba(23, 56, 77, 0.5);
+  --color-brand-dark-30: rgba(23, 56, 77, 0.3);
+  --color-brand-sage: #95978A;
+  --color-brand-sage-light: #B5B7AA;
+  --color-brand-sage-dark: #7A7C6F;
+  --color-brand-cream: #F5F4F0;
+  --color-brand-black: #0A0A0A;
+
+  /* Glass Colors */
+  --color-glass-white: rgba(255, 255, 255, 0.08);
+  --color-glass-white-md: rgba(255, 255, 255, 0.12);
+  --color-glass-white-lg: rgba(255, 255, 255, 0.18);
+  --color-glass-dark: rgba(23, 56, 77, 0.25);
+  --color-glass-dark-md: rgba(23, 56, 77, 0.40);
+  --color-glass-sage: rgba(149, 151, 138, 0.15);
+
+  /* Font Families */
+  --font-display: 'Archivo Black', sans-serif;
+  --font-body: 'Inter', sans-serif;
+
+  /* Font Sizes - Fluid */
+  --text-display-xl: clamp(3.5rem, 8vw, 9rem);
+  --text-display-xl--line-height: 0.95;
+  --text-display-xl--letter-spacing: -0.03em;
+  --text-display-lg: clamp(2.5rem, 5vw, 6rem);
+  --text-display-lg--line-height: 1.0;
+  --text-display-lg--letter-spacing: -0.02em;
+  --text-display-md: clamp(1.75rem, 3vw, 3.5rem);
+  --text-display-md--line-height: 1.1;
+  --text-display-md--letter-spacing: -0.01em;
+  --text-display-sm: clamp(1.25rem, 2vw, 2rem);
+  --text-display-sm--line-height: 1.2;
+
+  /* Shadows */
+  --shadow-glass: 0 8px 32px rgba(0, 0, 0, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  --shadow-glass-hover: 0 16px 48px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  --shadow-cinematic: 0 25px 60px -12px rgba(0, 0, 0, 0.5);
+
+  /* Animations */
+  --animate-fade-up: fadeUp 0.8s ease-out forwards;
+  --animate-glass-shimmer: glassShimmer 3s ease-in-out infinite;
+  --animate-pulse-soft: pulseSoft 2s ease-in-out infinite;
+  --animate-scroll-indicator: scrollIndicator 2s ease-in-out infinite;
+
+  /* Keyframes */
+  @keyframes fadeUp {
+    0% { opacity: 0; transform: translateY(40px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes glassShimmer {
+    0%, 100% { background-position: 200% center; }
+    50% { background-position: -200% center; }
+  }
+
+  @keyframes pulseSoft {
+    0%, 100% { opacity: 0.6; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.03); }
+  }
+
+  @keyframes scrollIndicator {
+    0% { opacity: 0; transform: translateY(0); }
+    30% { opacity: 1; }
+    100% { opacity: 0; transform: translateY(24px); }
+  }
+}
+
+/* ========================================
+   GLASSMORPHISM UTILITIES
+   ======================================== */
+
+@utility glass {
+  background: rgba(255, 255, 255, 0.08);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+@utility glass-md {
+  background: rgba(255, 255, 255, 0.12);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+}
+
+@utility glass-lg {
+  background: rgba(255, 255, 255, 0.18);
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(40px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+@utility glass-dark {
+  background: rgba(23, 56, 77, 0.3);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(23, 56, 77, 0.2);
+}
+
+@utility glass-dark-md {
+  background: rgba(23, 56, 77, 0.45);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+  border: 1px solid rgba(23, 56, 77, 0.3);
+}
+
+@utility glass-sage {
+  background: rgba(149, 151, 138, 0.15);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(149, 151, 138, 0.2);
+}
+
+@utility text-gradient-brand {
+  background: linear-gradient(135deg, #17384D, #95978A);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+@utility vignette {
+  box-shadow: inset 0 0 200px rgba(0, 0, 0, 0.5);
+}
+
+@utility noise-overlay {
+  position: relative;
+}
+
+/* ========================================
+   BASE STYLES
+   ======================================== */
+
+html {
+  scroll-behavior: auto; /* Lenis handles smooth scroll */
+  background-color: #0A0A0A;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  color: #F5F4F0;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+::selection {
+  background-color: rgba(23, 56, 77, 0.7);
+  color: #F5F4F0;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0A0A0A;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(149, 151, 138, 0.3);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(149, 151, 138, 0.5);
+}
+
+/* ========================================
+   REDUCED MOTION
+   ======================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
