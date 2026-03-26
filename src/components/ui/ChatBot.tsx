@@ -117,7 +117,7 @@ export default function ChatBot() {
     setStep('welcome')
     setTimeout(() => {
       addBotMsg(
-        '¡Hola! 👋 Soy el asistente virtual de ARQSA Arquitectos. Estoy aquí para ayudarte con tu proyecto.',
+        'Hola, bienvenido a ARQSA Arquitectos. Soy el asistente virtual y estoy aquí para ayudarte con tu proyecto.',
         ['Conocer nuestros servicios', 'Cotizar un proyecto', 'Ver proyectos realizados', 'Hablar con un arquitecto']
       )
     }, 400)
@@ -146,9 +146,9 @@ export default function ChatBot() {
             addBotMsg('¡Excelente! Vamos a preparar tu cotización. Primero, ¿cuál es tu nombre completo?', undefined, { type: 'text', placeholder: 'Tu nombre completo...' })
           } else if (option === 'Ver proyectos realizados') {
             setStep('projects_info')
-            addBotMsg('Hemos trabajado en más de 35 proyectos incluyendo residencias, oficinas corporativas, clínicas y más. Algunos de nuestros proyectos destacados:')
+            addBotMsg('Hemos trabajado en mas de 35 proyectos incluyendo residencias, oficinas corporativas, clinicas y mas. Algunos destacados:')
             setTimeout(() => {
-              addBotMsg('🏢 APTO Park Tower - Diseño interior residencial premium\n🏥 Clínica 1802 Torre Humana - Espacio de salud moderno\n🏛️ Fedecrédito - Oficinas corporativas\n🏠 Casa Fernández - Residencia contemporánea\n💼 Oficinas GEA - Espacio corporativo', ['Cotizar un proyecto', 'Conocer nuestros servicios', 'Hablar con un arquitecto'])
+              addBotMsg('- APTO Park Tower / Diseno interior residencial premium\n- Clinica 1802 Torre Humana / Espacio de salud moderno\n- Fedecredito / Oficinas corporativas\n- Casa Fernandez / Residencia contemporanea\n- Oficinas GEA / Espacio corporativo', ['Cotizar un proyecto', 'Conocer nuestros servicios', 'Hablar con un arquitecto'])
             }, 1500)
           } else if (option === 'Hablar con un arquitecto') {
             setStep('direct_name')
@@ -251,7 +251,7 @@ export default function ChatBot() {
           setStep('quote_summary')
           const d = userData
           addBotMsg(
-            `¡Excelente ${d.nombre}! Aquí está el resumen de tu solicitud:\n\n📋 Proyecto: ${d.tipoProyecto}\n🔧 Servicio: ${d.servicio}\n📍 Ubicación: ${d.ubicacion}\n📐 Tamaño: ${d.tamano}\n💰 Presupuesto: ${d.presupuesto}\n⏰ Plazo: ${d.plazo}\n📧 Email: ${d.email}\n📱 Teléfono: ${d.telefono}\n\n¿Todo está correcto?`,
+            `Excelente ${d.nombre}! Aqui esta el resumen:\n\n- Proyecto: ${d.tipoProyecto}\n- Servicio: ${d.servicio}\n- Ubicacion: ${d.ubicacion}\n- Tamano: ${d.tamano}\n- Presupuesto: ${d.presupuesto}\n- Plazo: ${d.plazo}\n- Email: ${d.email}\n- Telefono: ${d.telefono}\n\nTodo esta correcto?`,
             ['Sí, enviar a WhatsApp', 'Corregir información', 'Volver al inicio']
           )
           break
@@ -259,7 +259,7 @@ export default function ChatBot() {
         case 'quote_summary':
           if (option === 'Sí, enviar a WhatsApp') {
             openWhatsApp()
-            addBotMsg('¡Listo! Se abrió WhatsApp con toda tu información. Nuestro equipo te contactará pronto. ¡Gracias por confiar en ARQSA! 🏗️', ['Volver al inicio'])
+            addBotMsg('Listo! Se abrio WhatsApp con toda tu informacion. Nuestro equipo te contactara pronto. Gracias por confiar en ARQSA.', ['Volver al inicio'])
             setStep('end')
           } else if (option === 'Corregir información') {
             setStep('quote_name')
@@ -359,7 +359,7 @@ export default function ChatBot() {
           setUserData((prev) => ({ ...prev, descripcion: text }))
           setStep('end')
           openWhatsAppDirect(text)
-          addBotMsg(`¡Perfecto ${userData.nombre}! Se abrió WhatsApp para que puedas hablar directamente con nuestro equipo. Te atenderemos lo antes posible. 🏗️`, ['Volver al inicio'])
+          addBotMsg(`Perfecto ${userData.nombre}, se abrio WhatsApp para que hables directamente con nuestro equipo. Te atenderemos lo antes posible.`, ['Volver al inicio'])
           break
       }
     }, 300)
@@ -368,23 +368,27 @@ export default function ChatBot() {
   const openWhatsApp = () => {
     const d = userData
     const lines = [
-      '🏗️ *Nueva solicitud de cotización - Web ARQSA*',
+      '*NUEVA SOLICITUD - Web ARQSA*',
+      '-----------------------------------',
       '',
-      `👤 *Nombre:* ${d.nombre}`,
-      `📧 *Email:* ${d.email}`,
-      `📱 *Teléfono:* ${d.telefono}`,
+      `*Nombre:* ${d.nombre}`,
+      `*Email:* ${d.email}`,
+      `*Telefono:* ${d.telefono}`,
       '',
-      `🏠 *Tipo de proyecto:* ${d.tipoProyecto}`,
-      `🔧 *Servicio:* ${d.servicio}`,
-      `📍 *Ubicación:* ${d.ubicacion}`,
-      `📐 *Tamaño:* ${d.tamano}`,
-      `💰 *Presupuesto:* ${d.presupuesto}`,
-      `⏰ *Plazo:* ${d.plazo}`,
+      `*Tipo de proyecto:* ${d.tipoProyecto}`,
+      `*Servicio:* ${d.servicio}`,
+      `*Ubicacion:* ${d.ubicacion}`,
+      `*Tamano:* ${d.tamano}`,
+      `*Presupuesto:* ${d.presupuesto}`,
+      `*Plazo:* ${d.plazo}`,
       '',
-      `📝 *Descripción:*`,
+      `*Descripcion:*`,
       d.descripcion,
       '',
-      `📣 *Nos encontró por:* ${d.comoNosEncontro}`,
+      `*Nos encontro por:* ${d.comoNosEncontro}`,
+      '',
+      '-----------------------------------',
+      '_Enviado desde grupoarqsa.com_',
     ]
     const message = encodeURIComponent(lines.join('\n'))
     window.open(`${CONTACT.whatsappUrl}?text=${message}`, '_blank')
@@ -392,11 +396,15 @@ export default function ChatBot() {
 
   const openWhatsAppDirect = (reason: string) => {
     const lines = [
-      '💬 *Contacto directo - Web ARQSA*',
+      '*CONTACTO DIRECTO - Web ARQSA*',
+      '-----------------------------------',
       '',
-      `👤 *Nombre:* ${userData.nombre}`,
-      `📱 *Contacto:* ${userData.telefono}`,
-      `📝 *Motivo:* ${reason}`,
+      `*Nombre:* ${userData.nombre}`,
+      `*Contacto:* ${userData.telefono}`,
+      `*Motivo:* ${reason}`,
+      '',
+      '-----------------------------------',
+      '_Enviado desde grupoarqsa.com_',
     ]
     const message = encodeURIComponent(lines.join('\n'))
     window.open(`${CONTACT.whatsappUrl}?text=${message}`, '_blank')
