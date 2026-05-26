@@ -1,11 +1,21 @@
-import { useState } from 'react'
+import { useState, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import SectionHeading from '@/components/ui/SectionHeading'
 import GlassButton from '@/components/ui/GlassButton'
+import ProjectViewer from '@/components/ui/ProjectViewer'
 import { projects, categories } from '@/data/projects'
 
 export default function ProjectsGrid() {
   const [activeFilter, setActiveFilter] = useState('all')
+  const [viewerIndex, setViewerIndex] = useState<number | null>(null)
+
+  const handleOpenViewer = useCallback((filteredIndex: number) => {
+    setViewerIndex(filteredIndex)
+  }, [])
+
+  const handleCloseViewer = useCallback(() => {
+    setViewerIndex(null)
+  }, [])
 
   const filtered =
     activeFilter === 'all'
@@ -70,6 +80,7 @@ export default function ProjectsGrid() {
                   initial={{ opacity: 0, y: 40 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: i * 0.1, duration: 0.6 }}
+                  onClick={() => handleOpenViewer(i)}
                 >
                   <div className={`relative ${aspectRatio} rounded-2xl overflow-hidden glass`}>
                     {/* Project image */}
@@ -107,6 +118,14 @@ export default function ProjectsGrid() {
           </motion.div>
         </AnimatePresence>
       </div>
+
+      {viewerIndex !== null && (
+        <ProjectViewer
+          projects={filtered}
+          initialIndex={viewerIndex}
+          onClose={handleCloseViewer}
+        />
+      )}
     </section>
   )
 }
