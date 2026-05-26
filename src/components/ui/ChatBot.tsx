@@ -146,9 +146,9 @@ export default function ChatBot() {
             addBotMsg('¡Excelente! Vamos a preparar tu cotización. Primero, ¿cuál es tu nombre completo?', undefined, { type: 'text', placeholder: 'Tu nombre completo...' })
           } else if (option === 'Ver proyectos realizados') {
             setStep('projects_info')
-            addBotMsg('Hemos trabajado en mas de 35 proyectos incluyendo residencias, oficinas corporativas, clinicas y mas. Algunos destacados:')
+            addBotMsg('Hemos trabajado en mas de 35 proyectos incluyendo residencias, espacios comerciales, oficinas corporativas y mas. Algunos destacados:')
             setTimeout(() => {
-              addBotMsg('- APTO Park Tower / Diseno interior residencial premium\n- Clinica 1802 Torre Humana / Espacio de salud moderno\n- Fedecredito / Oficinas corporativas\n- Casa Fernandez / Residencia contemporanea\n- Oficinas GEA / Espacio corporativo', ['Cotizar un proyecto', 'Conocer nuestros servicios', 'Hablar con un arquitecto'])
+              addBotMsg('- APTO Park Tower / Diseno interior residencial premium\n- Casa Fernandez / Residencia contemporanea\n- Restaurante Los Olivos / Diseno comercial integral\n- Fedecredito / Oficinas corporativas\n- Oficinas GEA / Espacio corporativo', ['Cotizar un proyecto', 'Conocer nuestros servicios', 'Hablar con un arquitecto'])
             }, 1500)
           } else if (option === 'Hablar con un arquitecto') {
             setStep('direct_name')
@@ -299,7 +299,6 @@ export default function ChatBot() {
             'Apartamento / Penthouse',
             'Comercial (tienda, restaurante)',
             'Corporativo (oficinas)',
-            'Salud (clínica, consultorio)',
             'Remodelación',
             'Otro',
           ])
