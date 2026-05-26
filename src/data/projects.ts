@@ -88,10 +88,10 @@ export const projects: Project[] = [
     year: '2018',
     description:
       'Residencia diseñada con un lenguaje arquitectónico que prioriza la funcionalidad y la armonía con su contexto.',
-    heroImage: '/images/projects/casa-peraza/01.jpg',
-    thumbImage: '/images/projects/casa-peraza/01.jpg',
+    heroImage: '/images/projects/casa-peraza/01.png',
+    thumbImage: '/images/projects/casa-peraza/01.png',
     gallery: [
-      { src: '/images/projects/casa-peraza/01.jpg', layout: 'full' },
+      { src: '/images/projects/casa-peraza/01.png', layout: 'full' },
     ],
     services: ['Diseño Arquitectónico', 'Construcción'],
   },
