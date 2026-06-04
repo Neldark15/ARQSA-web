@@ -13,6 +13,7 @@ export const team: TeamMember[] = [
     role: 'El puente entre las ideas y las personas',
     description:
       'Personalidad dinámica y carismática que genera confianza desde el primer contacto. Su visión estratégica y energía comercial han sido clave para posicionar a ARQSA en proyectos de alto nivel.',
+    image: '/images/team/rene-sevillano.png',
   },
   {
     name: 'Arq. Margarita de Sevillano',
@@ -20,6 +21,7 @@ export const team: TeamMember[] = [
     role: 'El alma creativa de la firma',
     description:
       'Su sensibilidad estética y visión contemporánea transforman cada proyecto en un espacio funcional, armonioso y sofisticado, cuidando siempre los detalles y la experiencia del usuario final.',
+    image: '/images/team/margarita-sevillano.png',
   },
   {
     name: 'Arq. Héctor Aguilar',
@@ -27,5 +29,6 @@ export const team: TeamMember[] = [
     role: 'La garantía de orden y precisión',
     description:
       'Con más de 35 años en el campo, aporta estructura, control financiero y calidad a cada proyecto, optimizando recursos y asegurando transparencia en cada presupuesto.',
+    image: '/images/team/hector-aguilar.png',
   },
 ]

@@ -17,25 +17,29 @@ export default function Team() {
           {team.map((member, i) => (
             <RevealOnScroll key={member.name} delay={i * 0.15}>
               <GlassCard variant="dark" hover className="overflow-hidden group">
-                {/* Photo placeholder - B&W to color on hover */}
+                {/* Photo */}
                 <div className="relative aspect-[3/4] overflow-hidden">
-                  <div
-                    className="absolute inset-0 bg-gradient-to-br from-brand-dark to-brand-sage/40
-                    filter grayscale-[80%] group-hover:grayscale-0 transition-all duration-700"
-                  />
-                  {/* Geometric pattern placeholder */}
-                  <div className="absolute inset-0 flex items-center justify-center opacity-10">
-                    <svg width="120" height="120" viewBox="0 0 80 80" fill="none">
-                      <path d="M40 8L72 68H8L40 8Z" stroke="#95978A" strokeWidth="0.5" />
-                      <path d="M40 24L58 60H22L40 24Z" stroke="#95978A" strokeWidth="0.5" />
-                    </svg>
-                  </div>
-                  {/* Initials */}
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="font-display text-5xl text-brand-cream/20 group-hover:text-brand-cream/30 transition-colors duration-700">
-                      {member.name.split(' ').slice(-1)[0][0]}{member.name.split(' ').slice(-2)[0]?.[0] || ''}
-                    </span>
-                  </div>
+                  {member.image ? (
+                    <img
+                      src={member.image}
+                      alt={member.name}
+                      className="absolute inset-0 w-full h-full object-cover
+                      filter grayscale-[80%] group-hover:grayscale-0 transition-all duration-700"
+                      loading="lazy"
+                    />
+                  ) : (
+                    <>
+                      <div
+                        className="absolute inset-0 bg-gradient-to-br from-brand-dark to-brand-sage/40
+                        filter grayscale-[80%] group-hover:grayscale-0 transition-all duration-700"
+                      />
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <span className="font-display text-5xl text-brand-cream/20 group-hover:text-brand-cream/30 transition-colors duration-700">
+                          {member.name.split(' ').slice(-1)[0][0]}{member.name.split(' ').slice(-2)[0]?.[0] || ''}
+                        </span>
+                      </div>
+                    </>
+                  )}
                 </div>
 
                 {/* Info */}

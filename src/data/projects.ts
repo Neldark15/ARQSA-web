@@ -152,10 +152,10 @@ export const projects: Project[] = [
     year: '2024',
     description:
       'Propuesta de diseño para clínica médica en torre corporativa. Un espacio que transmite profesionalismo y confianza, con atención al detalle en cada ambiente.',
-    heroImage: '/images/projects/clinica-1802/01.jpg',
-    thumbImage: '/images/projects/clinica-1802/01.jpg',
+    heroImage: '/images/projects/clinica-1802/01.png',
+    thumbImage: '/images/projects/clinica-1802/01.png',
     gallery: [
-      { src: '/images/projects/clinica-1802/01.jpg', layout: 'full' },
+      { src: '/images/projects/clinica-1802/01.png', layout: 'full' },
     ],
     services: ['Diseño Arquitectónico', 'Interiorismo'],
   },
