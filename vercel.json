@@ -1,5 +1,7 @@
 {
   "rewrites": [
+    { "source": "/admin", "destination": "https://arqsa-admin-blue.vercel.app/admin" },
+    { "source": "/admin/:path*", "destination": "https://arqsa-admin-blue.vercel.app/admin/:path*" },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
