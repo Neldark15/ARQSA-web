@@ -67,8 +67,8 @@ export default function About() {
             <div className="lg:col-span-7 space-y-6">
               <RevealOnScroll>
                 <p className="text-brand-cream/80 text-lg leading-relaxed font-body">
-                  ARQSA nació como un proyecto familiar impulsado por la pasión por la arquitectura
-                  y una visión común: crear espacios funcionales, bien pensados y con carácter.
+                  ARQSA nació en San Salvador como un proyecto familiar impulsado por la pasión por la
+                  arquitectura y una visión común: crear espacios funcionales, bien pensados y con carácter.
                 </p>
               </RevealOnScroll>
               <RevealOnScroll delay={0.15}>

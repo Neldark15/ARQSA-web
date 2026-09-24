@@ -14,6 +14,9 @@ export default function Footer() {
             <p className="text-brand-sage text-sm font-body">
               Tu visión, con forma y diseño
             </p>
+            <p className="text-brand-sage/60 text-sm font-body mt-2">
+              Arquitectos en San Salvador, El Salvador
+            </p>
           </div>
 
           {/* Col 2 - Navigation */}
@@ -73,7 +76,8 @@ export default function Footer() {
 
         {/* Bottom bar */}
         <div className="border-t border-brand-sage/10 pt-6 flex flex-col items-center gap-3">
-          <p className="text-brand-sage/40 text-xs text-center font-body">
+          {/* suppressHydrationWarning: el año sale del prerender y puede diferir del reloj del visitante */}
+          <p className="text-brand-sage/40 text-xs text-center font-body" suppressHydrationWarning>
             &copy; {new Date().getFullYear()} ARQSA Arquitectos Sevillano Aguilar. Todos los derechos reservados.
           </p>
           <p className="text-brand-sage/30 text-[10px] uppercase tracking-[0.2em] font-body">

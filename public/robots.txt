@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://grupoarqsa.com/sitemap.xml
+Sitemap: https://www.grupoarqsa.com/sitemap.xml

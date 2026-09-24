@@ -1,52 +1,35 @@
-import { useRef, useEffect } from 'react'
+import { useRef, useEffect, Fragment } from 'react'
 import { motion } from 'framer-motion'
 import { gsap, ScrollTrigger } from '@/lib/gsapConfig'
 import GlassButton from '@/components/ui/GlassButton'
 import { CONTACT } from '@/lib/constants'
 
-const HERO_DELAY = 2.5 // After loader finishes
+const HERO_DELAY = 0.3
 
-function SplitChars({ text, delay, className }: { text: string; delay: number; className: string }) {
-  return (
-    <h1 className={className} aria-label={text}>
-      {text.split('').map((char, i) => (
-        <span key={i} className="inline-block overflow-hidden">
-          <motion.span
-            className="inline-block"
-            initial={{ y: '110%', opacity: 0 }}
-            animate={{ y: '0%', opacity: 1 }}
-            transition={{
-              duration: 0.7,
-              delay: delay + i * 0.06,
-              ease: [0.25, 0.1, 0.25, 1],
-            }}
-          >
-            {char === ' ' ? '\u00A0' : char}
-          </motion.span>
-        </span>
-      ))}
-    </h1>
-  )
-}
-
+// Palabras animadas separadas por espacios reales: el texto se lee "Tu visión, con forma y diseño"
+// (con margin en vez de espacios, buscadores y lectores de pantalla lo leían todo junto)
 function SplitWords({ text, delay, className }: { text: string; delay: number; className: string }) {
+  const words = text.split(' ')
   return (
-    <p className={className} aria-label={text}>
-      {text.split(' ').map((word, i) => (
-        <span key={i} className="inline-block overflow-hidden mr-[0.3em]">
-          <motion.span
-            className="inline-block"
-            initial={{ y: '110%', opacity: 0 }}
-            animate={{ y: '0%', opacity: 1 }}
-            transition={{
-              duration: 0.6,
-              delay: delay + i * 0.08,
-              ease: [0.25, 0.1, 0.25, 1],
-            }}
-          >
-            {word}
-          </motion.span>
-        </span>
+    <p className={className}>
+      {words.map((word, i) => (
+        <Fragment key={i}>
+          <span className="inline-block overflow-hidden">
+            <motion.span
+              className="inline-block"
+              initial={{ y: '110%', opacity: 0 }}
+              animate={{ y: '0%', opacity: 1 }}
+              transition={{
+                duration: 0.6,
+                delay: delay + i * 0.08,
+                ease: [0.25, 0.1, 0.25, 1],
+              }}
+            >
+              {word}
+            </motion.span>
+          </span>
+          {i < words.length - 1 && ' '}
+        </Fragment>
       ))}
     </p>
   )
@@ -96,7 +79,7 @@ export default function Hero() {
     <section
       id="hero"
       ref={sectionRef}
-      className="relative h-[100dvh] flex items-center justify-center overflow-hidden"
+      className="relative h-[100dvh] max-h-[1200px] flex items-center justify-center overflow-hidden"
     >
       {/* Background gradient */}
       <div className="absolute inset-0 bg-gradient-to-br from-brand-dark via-brand-black to-brand-dark" />
@@ -115,15 +98,29 @@ export default function Hero() {
 
       {/* Content */}
       <div ref={contentRef} className="relative z-10 text-center px-6 max-w-5xl mx-auto">
-        {/* Real ARQSA Logo */}
+        <motion.h1
+          className="mb-6 text-brand-sage text-[11px] sm:text-xs uppercase tracking-[0.2em] font-body"
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: HERO_DELAY, ease: [0.25, 0.1, 0.25, 1] }}
+        >
+          Arquitectos en El Salvador: diseño, construcción e interiorismo
+        </motion.h1>
+
+        {/* Logo: es el elemento LCP, así que solo se desplaza (sin opacidad 0) para pintarse en el primer frame */}
         <motion.div
           className="mb-4 flex justify-center"
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
+          initial={{ y: 30 }}
+          animate={{ y: 0 }}
           transition={{ duration: 1, delay: HERO_DELAY, ease: [0.25, 0.1, 0.25, 1] }}
         >
           <img
-            src="/logo-vertical-transparent.png"
+            src="/logo-hero-400.webp"
+            srcSet="/logo-hero-400.webp 400w, /logo-hero-800.webp 800w"
+            sizes="(min-width: 1024px) 384px, (min-width: 768px) 320px, (min-width: 640px) 256px, 192px"
+            width={400}
+            height={400}
+            fetchPriority="high"
             alt="ARQSA Arquitectos Sevillano Aguilar"
             className="w-48 sm:w-64 md:w-80 lg:w-96 h-auto"
           />

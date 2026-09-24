@@ -25,6 +25,11 @@ export default function RevealOnScroll({
   useEffect(() => {
     if (!ref.current) return
 
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      gsap.set(ref.current, { opacity: 1, x: 0, y: 0 })
+      return
+    }
+
     const offsets = {
       up: { y: distance, x: 0 },
       down: { y: -distance, x: 0 },
@@ -50,7 +55,8 @@ export default function RevealOnScroll({
         ease: 'power3.out',
         scrollTrigger: {
           trigger: ref.current,
-          start: 'top 85%',
+          // 'top bottom': dispara apenas asoma. Con 'top 85%' Googlebot (viewport alto, sin scroll) veía 2/3 del texto en opacidad 0
+          start: 'top bottom',
           toggleActions: once ? 'play none none none' : 'play reverse play reverse',
         },
       }

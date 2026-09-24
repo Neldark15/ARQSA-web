@@ -1,11 +1,24 @@
 import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
+import { createRoot, hydrateRoot } from 'react-dom/client'
+import { BrowserRouter } from 'react-router-dom'
+import { HelmetProvider } from 'react-helmet-async'
+import '@fontsource-variable/inter/wght.css'
+import '@fontsource/archivo-black/400.css'
 import '@/lib/gsapConfig'
 import '@/styles/index.css'
 import App from './App'
 
-createRoot(document.getElementById('root')!).render(
+const root = document.getElementById('root')!
+const tree = (
   <StrictMode>
-    <App />
-  </StrictMode>,
+    <HelmetProvider>
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </HelmetProvider>
+  </StrictMode>
 )
+
+// En producción el HTML viene prerenderizado (scripts/prerender.mjs): se hidrata. En `vite dev` el #root llega vacío.
+if (root.hasChildNodes()) hydrateRoot(root, tree)
+else createRoot(root).render(tree)
