@@ -9,26 +9,41 @@ interface SmoothScrollProps {
 
 export default function SmoothScroll({ children }: SmoothScrollProps) {
   useEffect(() => {
-    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
-
-    const lenis = new Lenis({
-      duration: 1.2,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
-      touchMultiplier: 2,
-    })
-
-    lenis.on('scroll', ScrollTrigger.update)
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    const lenis = reduceMotion
+      ? null
+      : new Lenis({
+          duration: 1.2,
+          easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+          touchMultiplier: 2,
+        })
 
     const raf = (time: number) => {
-      lenis.raf(time * 1000)
+      lenis?.raf(time * 1000)
     }
 
-    gsap.ticker.add(raf)
-    gsap.ticker.lagSmoothing(0)
+    if (lenis) {
+      lenis.on('scroll', ScrollTrigger.update)
+      gsap.ticker.add(raf)
+      gsap.ticker.lagSmoothing(0)
+    }
+
+    // Enlaces directos a una sección (grupoarqsa.com/#contact): el salto nativo ocurre antes de que
+    // ScrollTrigger agregue el espacio de las secciones fijadas, así que se vuelve a ubicar al asentarse el layout
+    const hashTimer = window.setTimeout(() => {
+      const id = decodeURIComponent(window.location.hash.slice(1))
+      const target = id ? document.getElementById(id) : null
+      if (!target) return
+      if (lenis) lenis.scrollTo(target, { immediate: true, force: true })
+      else target.scrollIntoView()
+    }, 800)
 
     return () => {
-      gsap.ticker.remove(raf)
-      lenis.destroy()
+      window.clearTimeout(hashTimer)
+      if (lenis) {
+        gsap.ticker.remove(raf)
+        lenis.destroy()
+      }
     }
   }, [])
 
