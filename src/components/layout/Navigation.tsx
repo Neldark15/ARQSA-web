@@ -54,21 +54,23 @@ export default function Navigation() {
       >
         <div className="mx-auto max-w-7xl px-6 flex items-center justify-between">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-3 group" onClick={() => scrollToSection('#hero')}>
+          <Link to="/" className="flex shrink-0 items-center gap-3 group" onClick={() => scrollToSection('#hero')}>
             <img
-              src="/logo-nav.png"
+              src="/logo-nav-320.webp"
               alt="ARQSA"
+              width={320}
+              height={122}
               className="h-10 sm:h-12 lg:h-14 w-auto"
             />
           </Link>
 
           {/* Desktop Links */}
-          <div className="hidden lg:flex items-center gap-8">
+          <div className="hidden lg:flex items-center gap-5 xl:gap-8">
             {NAV_LINKS.map((link) => (
               <button
                 key={link.href}
                 onClick={() => scrollToSection(link.href)}
-                className="relative text-sm uppercase tracking-[0.1em] text-white/70 hover:text-white transition-colors duration-300 font-body group"
+                className="relative text-xs xl:text-sm uppercase tracking-[0.1em] text-white/70 hover:text-white transition-colors duration-300 font-body group"
               >
                 {link.label}
                 <span className="absolute -bottom-1 left-1/2 h-[2px] w-0 bg-brand-sage transition-all duration-300 group-hover:w-full group-hover:left-0" />

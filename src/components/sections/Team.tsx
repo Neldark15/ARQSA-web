@@ -2,6 +2,7 @@ import SectionHeading from '@/components/ui/SectionHeading'
 import RevealOnScroll from '@/components/ui/RevealOnScroll'
 import GlassCard from '@/components/ui/GlassCard'
 import { team } from '@/data/team'
+import { responsiveImage, TEAM_WIDTHS } from '@/lib/images'
 
 export default function Team() {
   return (
@@ -21,11 +22,13 @@ export default function Team() {
                 <div className="relative aspect-[3/4] overflow-hidden">
                   {member.image ? (
                     <img
-                      src={member.image}
+                      {...responsiveImage(member.image, TEAM_WIDTHS)}
+                      sizes="(min-width: 768px) 33vw, 100vw"
                       alt={member.name}
                       className="absolute inset-0 w-full h-full object-cover
                       filter grayscale-[80%] group-hover:grayscale-0 transition-all duration-700"
                       loading="lazy"
+                      decoding="async"
                     />
                   ) : (
                     <>

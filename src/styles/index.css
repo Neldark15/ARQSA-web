@@ -1,10 +1,7 @@
 @import "tailwindcss";
 
-/* ========================================
-   FONTS - Google Fonts with full Latin Extended support (ñ, á, é, í, ó, ú)
-   ======================================== */
-
-@import url('https://fonts.googleapis.com/css2?family=Archivo+Black&family=Inter:wght@300;400;500;600&display=swap');
+/* Fuentes: autoalojadas con @fontsource (se importan en src/main.tsx).
+   El @import de Google Fonts que había aquí quedaba después de las reglas de Tailwind y el build lo descartaba. */
 
 /* ========================================
    TAILWIND THEME
@@ -33,7 +30,7 @@
 
   /* Font Families */
   --font-display: 'Archivo Black', sans-serif;
-  --font-body: 'Inter', sans-serif;
+  --font-body: 'Inter Variable', 'Inter', sans-serif;
 
   /* Font Sizes - Fluid */
   --text-display-xl: clamp(3.5rem, 8vw, 9rem);
@@ -150,12 +147,14 @@
 html {
   scroll-behavior: auto; /* Lenis handles smooth scroll */
   background-color: #0A0A0A;
+  overflow-x: clip;
 }
 
 body {
-  font-family: 'Inter', sans-serif;
+  font-family: 'Inter Variable', 'Inter', sans-serif;
   color: #F5F4F0;
-  overflow-x: hidden;
+  /* clip (no hidden): evita que las animaciones con desplazamiento lateral ensanchen el viewport en móvil */
+  overflow-x: clip;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

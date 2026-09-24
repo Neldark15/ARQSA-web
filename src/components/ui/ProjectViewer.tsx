@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react'
 import type { Project } from '@/data/projects'
+import { responsiveImage, PROJECT_WIDTHS } from '@/lib/images'
 
 interface Props {
   projects: Project[]
@@ -55,7 +56,9 @@ export default function ProjectViewer({ projects, initialIndex, onClose }: Props
         {/* Image */}
         <div className="w-full rounded-2xl overflow-hidden bg-black/50">
           <img
-            src={project.heroImage}
+            key={project.slug}
+            {...responsiveImage(project.heroImage, PROJECT_WIDTHS)}
+            sizes="(min-width: 1024px) 1024px, 100vw"
             alt={project.title}
             className="w-full h-auto max-h-[75vh] object-contain"
           />

@@ -22,7 +22,7 @@ export default function Services() {
         <SectionHeading
           label="Servicios"
           title="Lo Que Hacemos"
-          subtitle="Soluciones integrales para cada fase de tu proyecto"
+          subtitle="Soluciones integrales para cada fase de tu proyecto, en todo El Salvador"
         />
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">

@@ -4,6 +4,7 @@ import SectionHeading from '@/components/ui/SectionHeading'
 import GlassButton from '@/components/ui/GlassButton'
 import ProjectViewer from '@/components/ui/ProjectViewer'
 import { projects, categories } from '@/data/projects'
+import { responsiveImage, PROJECT_WIDTHS } from '@/lib/images'
 
 export default function ProjectsGrid() {
   const [activeFilter, setActiveFilter] = useState('all')
@@ -28,7 +29,7 @@ export default function ProjectsGrid() {
         <SectionHeading
           label="Portafolio"
           title="Proyectos"
-          subtitle="Clientes que hicieron realidad su visión con nosotros"
+          subtitle="Clientes que hicieron realidad su visión con nosotros en El Salvador"
         />
 
         {/* Filter bar */}
@@ -60,16 +61,20 @@ export default function ProjectsGrid() {
               const pattern = i % 5
               let colSpan = 'lg:col-span-7'
               let aspectRatio = 'aspect-[16/10]'
+              let sizes = '(min-width: 1024px) 58vw, 100vw'
 
               if (pattern === 1 || pattern === 2) {
                 colSpan = pattern === 1 ? 'lg:col-span-5' : 'lg:col-span-7'
                 aspectRatio = pattern === 1 ? 'aspect-[4/5]' : 'aspect-[16/10]'
+                if (pattern === 1) sizes = '(min-width: 1024px) 41vw, 100vw'
               } else if (pattern === 3) {
                 colSpan = 'lg:col-span-5'
                 aspectRatio = 'aspect-[4/5]'
+                sizes = '(min-width: 1024px) 41vw, 100vw'
               } else if (pattern === 4) {
                 colSpan = 'lg:col-span-12'
                 aspectRatio = 'aspect-[21/9]'
+                sizes = '100vw'
               }
 
               return (
@@ -85,10 +90,12 @@ export default function ProjectsGrid() {
                   <div className={`relative ${aspectRatio} rounded-2xl overflow-hidden glass`}>
                     {/* Project image */}
                     <img
-                      src={project.heroImage}
+                      {...responsiveImage(project.heroImage, PROJECT_WIDTHS)}
+                      sizes={sizes}
                       alt={project.title}
                       className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
                       loading="lazy"
+                      decoding="async"
                     />
 
                     {/* Project number watermark */}

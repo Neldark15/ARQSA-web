@@ -1,0 +1,12 @@
+{
+  "name": "ARQSA Arquitectos Sevillano Aguilar",
+  "short_name": "ARQSA",
+  "start_url": "/",
+  "display": "browser",
+  "theme_color": "#17384D",
+  "background_color": "#0A0A0A",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

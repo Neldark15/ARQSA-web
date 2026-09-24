@@ -447,7 +447,7 @@ export default function ChatBot() {
             <div className="flex items-center justify-between px-4 py-3 border-b border-white/10 shrink-0">
               <div className="flex items-center gap-3">
                 <div className="w-9 h-9 rounded-full bg-brand-sage/20 flex items-center justify-center">
-                  <img src="/logo-vertical-transparent.png" alt="" className="w-6 h-6 object-contain" />
+                  <img src="/logo-icon-96.webp" alt="" width={24} height={24} className="w-6 h-6 object-contain" />
                 </div>
                 <div>
                   <p className="text-brand-cream text-sm font-semibold">ARQSA Arquitectos</p>
