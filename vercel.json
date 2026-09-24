@@ -1,6 +1,12 @@
 {
   "redirects": [
     {
+      "source": "/",
+      "has": [{ "type": "host", "value": "arqsa-web.vercel.app" }],
+      "destination": "https://www.grupoarqsa.com/",
+      "permanent": true
+    },
+    {
       "source": "/:path*",
       "has": [{ "type": "host", "value": "arqsa-web.vercel.app" }],
       "destination": "https://www.grupoarqsa.com/:path*",
