@@ -24,6 +24,7 @@ export default function RevealOnScroll({
 
   useEffect(() => {
     if (!ref.current) return
+    const el = ref.current
 
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       gsap.set(ref.current, { opacity: 1, x: 0, y: 0 })
@@ -64,7 +65,7 @@ export default function RevealOnScroll({
 
     return () => {
       ScrollTrigger.getAll().forEach((t) => {
-        if (t.trigger === ref.current) t.kill()
+        if (t.trigger === el) t.kill()
       })
     }
   }, [direction, delay, duration, distance, once])

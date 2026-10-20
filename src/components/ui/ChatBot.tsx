@@ -246,7 +246,7 @@ export default function ChatBot() {
           addBotMsg('Casi terminamos. ¿Cuál es tu correo electrónico? (para enviarte información)', undefined, { type: 'email', placeholder: 'tu@email.com' })
           break
 
-        case 'quote_howfound':
+        case 'quote_howfound': {
           setUserData((prev) => ({ ...prev, comoNosEncontro: option }))
           setStep('quote_summary')
           const d = userData
@@ -255,6 +255,7 @@ export default function ChatBot() {
             ['Sí, enviar a WhatsApp', 'Corregir información', 'Volver al inicio']
           )
           break
+        }
 
         case 'quote_summary':
           if (option === 'Sí, enviar a WhatsApp') {

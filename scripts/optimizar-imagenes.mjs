@@ -3,7 +3,7 @@
 //
 // - Proyectos: public/images/projects/<slug>/01-800.webp y 01-1600.webp
 // - Equipo:    public/images/team/<nombre>-480.webp y <nombre>-960.webp
-// - Logos:     public/logo-hero-400.webp, logo-hero-800.webp, logo-nav-320.webp, logo-icon-96.webp
+// - Logos:     public/logo-hero-{240,400,600,800}.webp, logo-nav-{160,320}.webp, logo-icon-96.webp
 // - Íconos:    public/favicon.ico (16/32/48), icon-192.png, icon-512.png, apple-touch-icon.png
 // - Redes:     public/og-arqsa.jpg (1200x630)
 import fs from 'node:fs'
@@ -37,9 +37,8 @@ for (const f of fs.readdirSync(out('images/team')).filter((f) => /\.(png|jpe?g)$
 
 // 3. Logos
 console.log('Logos')
-await webp(out('logo-vertical-transparent.png'), out('logo-hero-400.webp'), 400, 90)
-await webp(out('logo-vertical-transparent.png'), out('logo-hero-800.webp'), 800, 90)
-await webp(out('logo-nav.png'), out('logo-nav-320.webp'), 320, 90)
+for (const w of [240, 400, 600, 800]) await webp(out('logo-vertical-transparent.png'), out(`logo-hero-${w}.webp`), w, 90)
+for (const w of [160, 320]) await webp(out('logo-nav.png'), out(`logo-nav-${w}.webp`), w, 90)
 await webp(out('logo-vertical-transparent.png'), out('logo-icon-96.webp'), 96, 90)
 
 // 4. Íconos: solo el símbolo (triángulo con "AS") recortado del logo sobre fondo de marca,

@@ -134,9 +134,9 @@ export default function About() {
                   >
                     <path d={value.icon} />
                   </svg>
-                  <h4 className="font-display text-lg text-brand-cream mb-2">
+                  <h3 className="font-display text-lg text-brand-cream mb-2">
                     {value.title}
-                  </h4>
+                  </h3>
                   <p className="text-brand-sage text-sm font-body">
                     {value.description}
                   </p>

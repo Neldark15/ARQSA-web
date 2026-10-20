@@ -21,6 +21,7 @@ export default function ParallaxImage({
 
   useEffect(() => {
     if (!containerRef.current || !imageRef.current) return
+    const container = containerRef.current
 
     gsap.set(imageRef.current, { scale })
 
@@ -37,7 +38,7 @@ export default function ParallaxImage({
 
     return () => {
       ScrollTrigger.getAll().forEach((t) => {
-        if (t.trigger === containerRef.current) t.kill()
+        if (t.trigger === container) t.kill()
       })
     }
   }, [speed, scale])

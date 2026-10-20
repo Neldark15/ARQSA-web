@@ -24,19 +24,19 @@
     },
     {
       "source": "/logo-(.*)",
-      "headers": [{ "key": "Cache-Control", "value": "public, max-age=604800" }]
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=2592000" }]
     },
     {
       "source": "/icon-(.*)",
-      "headers": [{ "key": "Cache-Control", "value": "public, max-age=604800" }]
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=2592000" }]
     },
     {
       "source": "/apple-touch-icon.png",
-      "headers": [{ "key": "Cache-Control", "value": "public, max-age=604800" }]
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=2592000" }]
     },
     {
       "source": "/favicon.ico",
-      "headers": [{ "key": "Cache-Control", "value": "public, max-age=604800" }]
+      "headers": [{ "key": "Cache-Control", "value": "public, max-age=2592000" }]
     },
     {
       "source": "/og-arqsa.jpg",
