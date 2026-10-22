@@ -1,12 +1,10 @@
-import { useState, useCallback, lazy, Suspense } from 'react'
+import { useState, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import SectionHeading from '@/components/ui/SectionHeading'
 import GlassButton from '@/components/ui/GlassButton'
+import ProjectViewer from '@/components/ui/ProjectViewer'
 import { projects, categories } from '@/data/projects'
 import { responsiveImage, PROJECT_WIDTHS } from '@/lib/images'
-
-// El visor solo se descarga cuando alguien abre un proyecto
-const ProjectViewer = lazy(() => import('@/components/ui/ProjectViewer'))
 
 export default function ProjectsGrid() {
   const [activeFilter, setActiveFilter] = useState('all')
@@ -135,13 +133,11 @@ export default function ProjectsGrid() {
       </div>
 
       {viewerIndex !== null && (
-        <Suspense fallback={null}>
-          <ProjectViewer
-            projects={filtered}
-            initialIndex={viewerIndex}
-            onClose={handleCloseViewer}
-          />
-        </Suspense>
+        <ProjectViewer
+          projects={filtered}
+          initialIndex={viewerIndex}
+          onClose={handleCloseViewer}
+        />
       )}
     </section>
   )
