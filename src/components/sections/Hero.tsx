@@ -42,6 +42,7 @@ export default function Hero() {
 
   useEffect(() => {
     if (!sectionRef.current || !contentRef.current) return
+    const section = sectionRef.current
 
     gsap.to(contentRef.current, {
       scale: 0.9,
@@ -70,7 +71,7 @@ export default function Hero() {
 
     return () => {
       ScrollTrigger.getAll().forEach((t) => {
-        if (t.trigger === sectionRef.current) t.kill()
+        if (t.trigger === section) t.kill()
       })
     }
   }, [])
@@ -116,7 +117,7 @@ export default function Hero() {
         >
           <img
             src="/logo-hero-400.webp"
-            srcSet="/logo-hero-400.webp 400w, /logo-hero-800.webp 800w"
+            srcSet="/logo-hero-240.webp 240w, /logo-hero-400.webp 400w, /logo-hero-600.webp 600w, /logo-hero-800.webp 800w"
             sizes="(min-width: 1024px) 384px, (min-width: 768px) 320px, (min-width: 640px) 256px, 192px"
             width={400}
             height={400}

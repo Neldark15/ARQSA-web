@@ -1,10 +1,12 @@
-import { useState, useCallback } from 'react'
+import { useState, useCallback, lazy, Suspense } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import SectionHeading from '@/components/ui/SectionHeading'
 import GlassButton from '@/components/ui/GlassButton'
-import ProjectViewer from '@/components/ui/ProjectViewer'
 import { projects, categories } from '@/data/projects'
 import { responsiveImage, PROJECT_WIDTHS } from '@/lib/images'
+
+// El visor solo se descarga cuando alguien abre un proyecto
+const ProjectViewer = lazy(() => import('@/components/ui/ProjectViewer'))
 
 export default function ProjectsGrid() {
   const [activeFilter, setActiveFilter] = useState('all')
@@ -85,9 +87,15 @@ export default function ProjectsGrid() {
                   initial={{ opacity: 0, y: 40 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: i * 0.1, duration: 0.6 }}
-                  onClick={() => handleOpenViewer(i)}
                 >
                   <div className={`relative ${aspectRatio} rounded-2xl overflow-hidden glass`}>
+                    {/* Botón transparente sobre toda la tarjeta: abre el visor con clic o con teclado (Tab + Enter) */}
+                    <button
+                      type="button"
+                      onClick={() => handleOpenViewer(i)}
+                      aria-label={`Ver proyecto ${project.title}`}
+                      className="absolute inset-0 z-10 cursor-pointer rounded-2xl focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-sage"
+                    />
                     {/* Project image */}
                     <img
                       {...responsiveImage(project.heroImage, PROJECT_WIDTHS)}
@@ -99,7 +107,7 @@ export default function ProjectsGrid() {
                     />
 
                     {/* Project number watermark */}
-                    <div className="absolute top-4 right-4 font-display text-6xl text-white/5">
+                    <div aria-hidden="true" className="absolute top-4 right-4 font-display text-6xl text-white/5">
                       {String(i + 1).padStart(2, '0')}
                     </div>
 
@@ -127,11 +135,13 @@ export default function ProjectsGrid() {
       </div>
 
       {viewerIndex !== null && (
-        <ProjectViewer
-          projects={filtered}
-          initialIndex={viewerIndex}
-          onClose={handleCloseViewer}
-        />
+        <Suspense fallback={null}>
+          <ProjectViewer
+            projects={filtered}
+            initialIndex={viewerIndex}
+            onClose={handleCloseViewer}
+          />
+        </Suspense>
       )}
     </section>
   )

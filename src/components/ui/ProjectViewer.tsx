@@ -38,6 +38,9 @@ export default function ProjectViewer({ projects, initialIndex, onClose }: Props
     <div
       className="fixed inset-0 z-50 flex items-center justify-center bg-brand-black/95"
       onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+      aria-label={project.title}
     >
       <div
         className="relative flex flex-col items-center max-w-5xl w-full mx-4 md:mx-8"
@@ -46,6 +49,8 @@ export default function ProjectViewer({ projects, initialIndex, onClose }: Props
         {/* Close button */}
         <button
           onClick={onClose}
+          aria-label="Cerrar"
+          autoFocus
           className="absolute -top-12 right-0 w-10 h-10 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-colors"
         >
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-brand-cream">
@@ -69,6 +74,7 @@ export default function ProjectViewer({ projects, initialIndex, onClose }: Props
           <button
             data-action="prev"
             onClick={goPrev}
+            aria-label="Proyecto anterior"
             className="w-12 h-12 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-colors"
           >
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-brand-cream">
@@ -88,6 +94,7 @@ export default function ProjectViewer({ projects, initialIndex, onClose }: Props
           <button
             data-action="next"
             onClick={goNext}
+            aria-label="Proyecto siguiente"
             className="w-12 h-12 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-colors"
           >
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-brand-cream">

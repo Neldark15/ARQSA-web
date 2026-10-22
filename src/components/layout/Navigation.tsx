@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { motion, AnimatePresence } from 'framer-motion'
-import { gsap, ScrollTrigger } from '@/lib/gsapConfig'
 import GlassButton from '@/components/ui/GlassButton'
 import { CONTACT } from '@/lib/constants'
 
@@ -57,6 +56,8 @@ export default function Navigation() {
           <Link to="/" className="flex shrink-0 items-center gap-3 group" onClick={() => scrollToSection('#hero')}>
             <img
               src="/logo-nav-320.webp"
+              srcSet="/logo-nav-160.webp 160w, /logo-nav-320.webp 320w"
+              sizes="(min-width: 1024px) 147px, (min-width: 640px) 126px, 105px"
               alt="ARQSA"
               width={320}
               height={122}
@@ -90,7 +91,8 @@ export default function Navigation() {
           <button
             className="lg:hidden relative w-8 h-8 flex flex-col items-center justify-center gap-1.5"
             onClick={() => setIsMobileOpen(!isMobileOpen)}
-            aria-label="Toggle menu"
+            aria-label={isMobileOpen ? 'Cerrar menú' : 'Abrir menú'}
+            aria-expanded={isMobileOpen}
           >
             <motion.span
               className="block w-6 h-[1.5px] bg-brand-cream"

@@ -14,7 +14,7 @@ export default function Footer() {
             <p className="text-brand-sage text-sm font-body">
               Tu visión, con forma y diseño
             </p>
-            <p className="text-brand-sage/60 text-sm font-body mt-2">
+            <p className="text-brand-sage/85 text-sm font-body mt-2">
               Arquitectos en San Salvador, El Salvador
             </p>
           </div>
@@ -33,7 +33,7 @@ export default function Footer() {
                       const id = item.toLowerCase()
                       document.querySelector(`#${id === 'inicio' ? 'hero' : id === 'nosotros' ? 'about' : id}`)?.scrollIntoView({ behavior: 'smooth' })
                     }}
-                    className="text-brand-sage/70 hover:text-brand-cream text-sm transition-colors duration-300 text-left font-body"
+                    className="text-brand-sage/85 hover:text-brand-cream text-sm transition-colors duration-300 text-left font-body"
                   >
                     {item}
                   </button>
@@ -47,7 +47,7 @@ export default function Footer() {
             <h4 className="text-brand-cream text-sm uppercase tracking-[0.15em] mb-4 font-body">
               Contacto
             </h4>
-            <div className="flex flex-col gap-3 text-sm text-brand-sage/70 font-body">
+            <div className="flex flex-col gap-3 text-sm text-brand-sage/85 font-body">
               <a
                 href={`mailto:${CONTACT.email}`}
                 className="hover:text-brand-cream transition-colors duration-300"
@@ -77,11 +77,11 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="border-t border-brand-sage/10 pt-6 flex flex-col items-center gap-3">
           {/* suppressHydrationWarning: el año sale del prerender y puede diferir del reloj del visitante */}
-          <p className="text-brand-sage/40 text-xs text-center font-body" suppressHydrationWarning>
+          <p className="text-brand-sage/80 text-xs text-center font-body" suppressHydrationWarning>
             &copy; {new Date().getFullYear()} ARQSA Arquitectos Sevillano Aguilar. Todos los derechos reservados.
           </p>
-          <p className="text-brand-sage/30 text-[10px] uppercase tracking-[0.2em] font-body">
-            Diseñado por <span className="text-brand-sage/50">NOCTURA</span>
+          <p className="text-brand-sage/80 text-[10px] uppercase tracking-[0.2em] font-body">
+            Diseñado por <span className="text-brand-sage">NOCTURA</span>
           </p>
         </div>
       </div>

@@ -12,6 +12,7 @@ function DesktopMethodology() {
 
   useEffect(() => {
     if (!containerRef.current || !panelsRef.current) return
+    const container = containerRef.current
 
     const panels = panelsRef.current
     const totalWidth = panels.scrollWidth - window.innerWidth
@@ -31,7 +32,7 @@ function DesktopMethodology() {
     return () => {
       tween.kill()
       ScrollTrigger.getAll().forEach((t) => {
-        if (t.trigger === containerRef.current) t.kill()
+        if (t.trigger === container) t.kill()
       })
     }
   }, [])
@@ -46,9 +47,12 @@ function DesktopMethodology() {
           >
             <GlassCard variant="dark" className="max-w-lg p-12 relative">
               {/* Large number background */}
-              <span className="absolute top-6 right-8 font-display text-[8rem] leading-none text-brand-sage/10">
-                {step.number}
-              </span>
+              {/* Número decorativo dibujado con ::before: no es texto, así que no cuenta para contraste ni lectores de pantalla */}
+              <span
+                aria-hidden="true"
+                data-number={step.number}
+                className="absolute top-6 right-8 font-display text-[8rem] leading-none text-brand-sage/10 before:content-[attr(data-number)]"
+              />
 
               <span className="text-brand-sage text-xs uppercase tracking-[0.2em] font-body">
                 Paso {step.number}
