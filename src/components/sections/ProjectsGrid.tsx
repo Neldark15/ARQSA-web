@@ -125,6 +125,7 @@ export default function ProjectsGrid() {
                       </div>
                     </div>
                   </div>
+                  <a href={`/proyectos/${project.slug}`} className="mt-3 inline-block text-sm text-brand-sage-light underline underline-offset-4">Conocer {project.title}</a>
                 </motion.div>
               )
             })}

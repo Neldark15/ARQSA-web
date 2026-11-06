@@ -1,144 +1,64 @@
 import { useState, useEffect, useRef } from 'react'
-import { Link } from 'react-router-dom'
-import { motion, AnimatePresence } from 'framer-motion'
-import GlassButton from '@/components/ui/GlassButton'
-import { CONTACT } from '@/lib/constants'
-
-const NAV_LINKS = [
-  { label: 'Inicio', href: '#hero' },
-  { label: 'Nosotros', href: '#about' },
-  { label: 'Proyectos', href: '#projects' },
-  { label: 'Servicios', href: '#services' },
-  { label: 'Metodología', href: '#methodology' },
-  { label: 'Equipo', href: '#team' },
-  { label: 'Contacto', href: '#contact' },
-]
+import { Menu, X } from 'lucide-react'
+import { CONTACT, NAV_LINKS } from '@/lib/constants'
+import { containDialogTab } from '@/lib/dialog'
 
 export default function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false)
-  const [isHidden, setIsHidden] = useState(false)
   const [isMobileOpen, setIsMobileOpen] = useState(false)
-  const lastScrollY = useRef(0)
-  const navRef = useRef<HTMLElement>(null)
+  const dialogRef = useRef<HTMLDialogElement>(null)
 
   useEffect(() => {
-    const handleScroll = () => {
-      const currentY = window.scrollY
-      setIsScrolled(currentY > 100)
-      setIsHidden(currentY > 300 && currentY > lastScrollY.current)
-      lastScrollY.current = currentY
-    }
-
+    const handleScroll = () => setIsScrolled(window.scrollY > 60)
+    handleScroll()
     window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  const scrollToSection = (href: string) => {
-    setIsMobileOpen(false)
-    const el = document.querySelector(href)
-    if (el) {
-      el.scrollIntoView({ behavior: 'smooth' })
+  useEffect(() => {
+    if (!isMobileOpen) return
+    const dialog = dialogRef.current!
+    const opener = document.activeElement as HTMLElement | null
+    const previousOverflow = document.body.style.overflow
+    document.body.style.overflow = 'hidden'
+    dialog.showModal()
+    const desktop = window.matchMedia('(min-width: 1024px)')
+    const closeOnDesktop = () => { if (desktop.matches) setIsMobileOpen(false) }
+    desktop.addEventListener('change', closeOnDesktop)
+    return () => {
+      desktop.removeEventListener('change', closeOnDesktop)
+      dialog.close()
+      document.body.style.overflow = previousOverflow
+      opener?.focus({ preventScroll: true })
     }
-  }
+  }, [isMobileOpen])
 
   return (
     <>
-      <motion.nav
-        ref={navRef}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-          isScrolled ? 'glass-dark py-3' : 'py-6'
-        }`}
-        animate={{ y: isHidden ? '-100%' : '0%' }}
-        transition={{ duration: 0.3, ease: [0.25, 0.1, 0.25, 1] }}
-      >
-        <div className="mx-auto max-w-7xl px-6 flex items-center justify-between">
-          {/* Logo */}
-          <Link to="/" className="flex shrink-0 items-center gap-3 group" onClick={() => scrollToSection('#hero')}>
-            <img
-              src="/logo-nav-320.webp"
-              srcSet="/logo-nav-160.webp 160w, /logo-nav-320.webp 320w"
-              sizes="(min-width: 1024px) 147px, (min-width: 640px) 126px, 105px"
-              alt="ARQSA"
-              width={320}
-              height={122}
-              className="h-10 sm:h-12 lg:h-14 w-auto"
-            />
-          </Link>
-
-          {/* Desktop Links */}
-          <div className="hidden lg:flex items-center gap-5 xl:gap-8">
-            {NAV_LINKS.map((link) => (
-              <button
-                key={link.href}
-                onClick={() => scrollToSection(link.href)}
-                className="relative text-xs xl:text-sm uppercase tracking-[0.1em] text-white/70 hover:text-white transition-colors duration-300 font-body group"
-              >
-                {link.label}
-                <span className="absolute -bottom-1 left-1/2 h-[2px] w-0 bg-brand-sage transition-all duration-300 group-hover:w-full group-hover:left-0" />
-              </button>
-            ))}
-            <GlassButton
-              variant="primary"
-              size="sm"
-              href={CONTACT.whatsappUrl}
-              target="_blank"
-            >
-              Contáctanos
-            </GlassButton>
+      <nav aria-label="Principal" className={`fixed inset-x-0 top-0 z-40 border-b transition-colors ${isScrolled ? 'border-white/10 bg-[#101315] py-3' : 'border-transparent bg-black/30 py-5'}`}>
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-6">
+          <a href="/#hero" aria-label="GRUPO ARQSA, inicio" className="shrink-0">
+            <img src="/logo-nav-320.webp" srcSet="/logo-nav-160.webp 160w, /logo-nav-320.webp 320w" sizes="(min-width: 1024px) 147px, 105px" alt="GRUPO ARQSA" width={320} height={122} className="h-10 w-auto lg:h-14" />
+          </a>
+          <div className="hidden items-center gap-5 lg:flex xl:gap-7">
+            {NAV_LINKS.map((link) => <a key={link.href} href={link.href} className="text-xs text-white/85 hover:text-white xl:text-sm">{link.label}</a>)}
+            <a className="rounded-lg bg-brand-cream px-4 py-3 text-sm font-semibold text-brand-black" href={CONTACT.whatsappUrl} target="_blank" rel="noopener noreferrer">Cotizar</a>
           </div>
-
-          {/* Mobile Hamburger */}
-          <button
-            className="lg:hidden relative w-8 h-8 flex flex-col items-center justify-center gap-1.5"
-            onClick={() => setIsMobileOpen(!isMobileOpen)}
-            aria-label={isMobileOpen ? 'Cerrar menú' : 'Abrir menú'}
-            aria-expanded={isMobileOpen}
-          >
-            <motion.span
-              className="block w-6 h-[1.5px] bg-brand-cream"
-              animate={isMobileOpen ? { rotate: 45, y: 4.5 } : { rotate: 0, y: 0 }}
-              transition={{ duration: 0.3 }}
-            />
-            <motion.span
-              className="block w-6 h-[1.5px] bg-brand-cream"
-              animate={isMobileOpen ? { opacity: 0 } : { opacity: 1 }}
-              transition={{ duration: 0.2 }}
-            />
-            <motion.span
-              className="block w-6 h-[1.5px] bg-brand-cream"
-              animate={isMobileOpen ? { rotate: -45, y: -4.5 } : { rotate: 0, y: 0 }}
-              transition={{ duration: 0.3 }}
-            />
-          </button>
+          <button className="flex size-11 items-center justify-center text-brand-cream lg:hidden" onClick={() => setIsMobileOpen(true)} aria-label="Abrir menú" aria-expanded={isMobileOpen} aria-controls="mobile-menu"><Menu /></button>
         </div>
-      </motion.nav>
-
-      {/* Mobile Menu Overlay */}
-      <AnimatePresence>
-        {isMobileOpen && (
-          <motion.div
-            className="fixed inset-0 z-40 glass-dark flex flex-col items-center justify-center gap-8"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-          >
-            {NAV_LINKS.map((link, i) => (
-              <motion.button
-                key={link.href}
-                onClick={() => scrollToSection(link.href)}
-                className="text-2xl font-display text-brand-cream tracking-wider"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ delay: i * 0.08, duration: 0.4 }}
-              >
-                {link.label}
-              </motion.button>
-            ))}
-          </motion.div>
-        )}
-      </AnimatePresence>
+      </nav>
+      {isMobileOpen && (
+        <dialog id="mobile-menu" ref={dialogRef} aria-label="Navegación" data-lenis-prevent onKeyDown={containDialogTab} onCancel={(event) => { event.preventDefault(); setIsMobileOpen(false) }} className="fixed inset-0 m-0 h-dvh max-h-none w-full max-w-none overflow-auto border-0 bg-[#101315] p-6 text-brand-cream">
+          <div className="flex items-center justify-between gap-4">
+            <span className="font-display text-xl">GRUPO ARQSA</span>
+            <button autoFocus onClick={() => setIsMobileOpen(false)} aria-label="Cerrar menú" className="flex size-11 items-center justify-center"><X /></button>
+          </div>
+          <nav aria-label="Móvil" className="mx-auto mt-8 flex max-w-sm flex-col gap-2">
+            {NAV_LINKS.map((link) => <a key={link.href} href={link.href} onClick={() => setIsMobileOpen(false)} className="border-b border-white/10 py-3 font-display text-xl">{link.label}</a>)}
+            <a href={CONTACT.whatsappUrl} target="_blank" rel="noopener noreferrer" className="action-primary mt-4">Cotizar mi proyecto</a>
+          </nav>
+        </dialog>
+      )}
     </>
   )
 }

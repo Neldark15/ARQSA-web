@@ -37,7 +37,7 @@ export default function About() {
       </div>
 
       {/* Block A - Manifesto */}
-      <div className="relative py-32 md:py-40 px-6">
+      <div className="relative pt-12 md:pt-14 pb-24 px-6">
         <div className="max-w-4xl mx-auto text-center">
           <AnimatedText
             text="Creamos espacios que trascienden lo funcional, donde cada línea, cada material y cada decisión de diseño responde a una visión compartida entre nosotros y quienes confían en nuestro trabajo."
