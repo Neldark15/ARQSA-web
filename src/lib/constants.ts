@@ -1,3 +1,13 @@
+export const NAV_LINKS = [
+  { label: 'Inicio', href: '/#hero' },
+  { label: 'Nosotros', href: '/#about' },
+  { label: 'Proyectos', href: '/#projects' },
+  { label: 'Servicios', href: '/#services' },
+  { label: 'Metodología', href: '/#methodology' },
+  { label: 'Equipo', href: '/#team' },
+  { label: 'Contacto', href: '/#contact' },
+] as const
+
 export const BRAND = {
   colors: {
     dark: '#17384D',

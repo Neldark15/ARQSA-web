@@ -5,6 +5,9 @@ import SmoothScroll from '@/components/layout/SmoothScroll'
 import Navigation from '@/components/layout/Navigation'
 import Footer from '@/components/layout/Footer'
 import HomePage from '@/pages/HomePage'
+import ProjectPage from '@/pages/ProjectPage'
+import ServicePage from '@/pages/ServicePage'
+import NotFoundPage from '@/pages/NotFoundPage'
 
 const ChatBot = lazy(() => import('@/components/ui/ChatBot'))
 
@@ -34,9 +37,13 @@ export default function App() {
     <MotionConfig reducedMotion="user">
       <SmoothScroll>
         <Navigation />
-        <main>
+        <a href="#main-content" className="sr-only focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[100] focus:bg-white focus:px-5 focus:py-3 focus:text-black">Saltar al contenido</a>
+        <main id="main-content" tabIndex={-1}>
           <Routes>
             <Route path="/" element={<HomePage />} />
+            <Route path="/proyectos/:slug" element={<ProjectPage />} />
+            <Route path="/servicios/:slug" element={<ServicePage />} />
+            <Route path="*" element={<NotFoundPage />} />
           </Routes>
         </main>
         <Footer />

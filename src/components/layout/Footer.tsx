@@ -1,4 +1,4 @@
-import { CONTACT } from '@/lib/constants'
+import { CONTACT, NAV_LINKS } from '@/lib/constants'
 
 export default function Footer() {
   return (
@@ -10,7 +10,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-16">
           {/* Col 1 - Brand */}
           <div>
-            <h3 className="font-display text-3xl text-brand-cream mb-3">ARQSA</h3>
+            <h3 className="font-display text-2xl text-brand-cream mb-3">GRUPO ARQSA</h3>
             <p className="text-brand-sage text-sm font-body">
               Tu visión, con forma y diseño
             </p>
@@ -25,18 +25,15 @@ export default function Footer() {
               Navegación
             </h4>
             <nav className="flex flex-col gap-2">
-              {['Inicio', 'Nosotros', 'Proyectos', 'Servicios', 'Metodología', 'Equipo', 'Contacto'].map(
+              {NAV_LINKS.map(
                 (item) => (
-                  <button
-                    key={item}
-                    onClick={() => {
-                      const id = item.toLowerCase()
-                      document.querySelector(`#${id === 'inicio' ? 'hero' : id === 'nosotros' ? 'about' : id}`)?.scrollIntoView({ behavior: 'smooth' })
-                    }}
+                  <a
+                    key={item.href}
+                    href={item.href}
                     className="text-brand-sage/85 hover:text-brand-cream text-sm transition-colors duration-300 text-left font-body"
                   >
-                    {item}
-                  </button>
+                    {item.label}
+                  </a>
                 )
               )}
             </nav>
@@ -78,10 +75,10 @@ export default function Footer() {
         <div className="border-t border-brand-sage/10 pt-6 flex flex-col items-center gap-3">
           {/* suppressHydrationWarning: el año sale del prerender y puede diferir del reloj del visitante */}
           <p className="text-brand-sage/80 text-xs text-center font-body" suppressHydrationWarning>
-            &copy; {new Date().getFullYear()} ARQSA Arquitectos Sevillano Aguilar. Todos los derechos reservados.
+            &copy; {new Date().getFullYear()} GRUPO ARQSA. Todos los derechos reservados.
           </p>
           <p className="text-brand-sage/80 text-[10px] uppercase tracking-[0.2em] font-body">
-            Diseñado por <span className="text-brand-sage">NOCTURA</span>
+            Desarrollado por <span className="text-brand-sage">NOCTURA</span>
           </p>
         </div>
       </div>

@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect, useCallback } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { CONTACT } from '@/lib/constants'
+import { MessageSquare, Send, X, ArrowUpRight } from 'lucide-react'
+import { whatsappLink } from '@/lib/contact'
 
 interface Message {
   id: number
@@ -61,6 +62,7 @@ const SERVICES: Record<string, { desc: string; examples: string }> = {
 
 export default function ChatBot() {
   const [isOpen, setIsOpen] = useState(false)
+  const [handoffUrl, setHandoffUrl] = useState('')
   const [messages, setMessages] = useState<Message[]>([])
   const [step, setStep] = useState('idle')
   const [userData, setUserData] = useState<UserData>(EMPTY_DATA)
@@ -71,6 +73,18 @@ export default function ChatBot() {
   const messagesEndRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
   const msgIdRef = useRef(0)
+  const closeRef = useRef<HTMLButtonElement>(null)
+  const triggerRef = useRef<HTMLButtonElement>(null)
+  const hasOpened = useRef(false)
+
+  useEffect(() => {
+    if (isOpen) {
+      hasOpened.current = true
+      closeRef.current?.focus()
+    } else if (hasOpened.current) {
+      triggerRef.current?.focus()
+    }
+  }, [isOpen])
 
   const scrollToBottom = () => {
     setTimeout(() => messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' }), 50)
@@ -110,6 +124,7 @@ export default function ChatBot() {
   }
 
   const startChat = () => {
+    setHandoffUrl('')
     setMessages([])
     setUserData(EMPTY_DATA)
     setShowInput(false)
@@ -117,7 +132,7 @@ export default function ChatBot() {
     setStep('welcome')
     setTimeout(() => {
       addBotMsg(
-        'Hola, bienvenido a ARQSA Arquitectos. Soy el asistente virtual y estoy aquí para ayudarte con tu proyecto.',
+        'Hola, bienvenido a GRUPO ARQSA. Soy el asistente virtual y estoy aquí para ayudarte con tu proyecto.',
         ['Conocer nuestros servicios', 'Cotizar un proyecto', 'Ver proyectos realizados', 'Hablar con un arquitecto']
       )
     }, 400)
@@ -146,7 +161,7 @@ export default function ChatBot() {
             addBotMsg('¡Excelente! Vamos a preparar tu cotización. Primero, ¿cuál es tu nombre completo?', undefined, { type: 'text', placeholder: 'Tu nombre completo...' })
           } else if (option === 'Ver proyectos realizados') {
             setStep('projects_info')
-            addBotMsg('Hemos trabajado en mas de 35 proyectos incluyendo residencias, espacios comerciales, oficinas corporativas y mas. Algunos destacados:')
+            addBotMsg('Nuestro portafolio incluye residencias, espacios comerciales y oficinas corporativas. Algunos proyectos destacados:')
             setTimeout(() => {
               addBotMsg('- APTO Park Tower / Diseno interior residencial premium\n- Casa Fernandez / Residencia contemporanea\n- Restaurante Los Olivos / Diseno comercial integral\n- Fedecredito / Oficinas corporativas\n- Oficinas GEA / Espacio corporativo', ['Cotizar un proyecto', 'Conocer nuestros servicios', 'Hablar con un arquitecto'])
             }, 1500)
@@ -252,15 +267,15 @@ export default function ChatBot() {
           const d = userData
           addBotMsg(
             `Excelente ${d.nombre}! Aqui esta el resumen:\n\n- Proyecto: ${d.tipoProyecto}\n- Servicio: ${d.servicio}\n- Ubicacion: ${d.ubicacion}\n- Tamano: ${d.tamano}\n- Presupuesto: ${d.presupuesto}\n- Plazo: ${d.plazo}\n- Email: ${d.email}\n- Telefono: ${d.telefono}\n\nTodo esta correcto?`,
-            ['Sí, enviar a WhatsApp', 'Corregir información', 'Volver al inicio']
+            ['Preparar mensaje para WhatsApp', 'Corregir información', 'Volver al inicio']
           )
           break
         }
 
         case 'quote_summary':
-          if (option === 'Sí, enviar a WhatsApp') {
+          if (option === 'Preparar mensaje para WhatsApp') {
             openWhatsApp()
-            addBotMsg('Listo! Se abrio WhatsApp con toda tu informacion. Nuestro equipo te contactara pronto. Gracias por confiar en ARQSA.', ['Volver al inicio'])
+            addBotMsg('Tu consulta está preparada. Puedes continuar en WhatsApp para revisar y enviar el mensaje a nuestro equipo.', ['Volver al inicio'])
             setStep('end')
           } else if (option === 'Corregir información') {
             setStep('quote_name')
@@ -359,7 +374,7 @@ export default function ChatBot() {
           setUserData((prev) => ({ ...prev, descripcion: text }))
           setStep('end')
           openWhatsAppDirect(text)
-          addBotMsg(`Perfecto ${userData.nombre}, se abrio WhatsApp para que hables directamente con nuestro equipo. Te atenderemos lo antes posible.`, ['Volver al inicio'])
+          addBotMsg(`${userData.nombre}, tu consulta está preparada. Continúa en WhatsApp para revisar y enviar el mensaje.`, ['Volver al inicio'])
           break
       }
     }, 300)
@@ -390,8 +405,7 @@ export default function ChatBot() {
       '-----------------------------------',
       '_Enviado desde grupoarqsa.com_',
     ]
-    const message = encodeURIComponent(lines.join('\n'))
-    window.open(`${CONTACT.whatsappUrl}?text=${message}`, '_blank')
+    setHandoffUrl(whatsappLink(lines.join('\n')))
   }
 
   const openWhatsAppDirect = (reason: string) => {
@@ -406,8 +420,7 @@ export default function ChatBot() {
       '-----------------------------------',
       '_Enviado desde grupoarqsa.com_',
     ]
-    const message = encodeURIComponent(lines.join('\n'))
-    window.open(`${CONTACT.whatsappUrl}?text=${message}`, '_blank')
+    setHandoffUrl(whatsappLink(lines.join('\n')))
   }
 
   return (
@@ -416,7 +429,8 @@ export default function ChatBot() {
       <AnimatePresence>
         {!isOpen && (
           <motion.button
-            className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full glass-dark shadow-cinematic flex items-center justify-center group"
+            ref={triggerRef}
+            className="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-[#202528] border border-white/25 shadow-cinematic flex items-center justify-center group"
             onClick={handleOpen}
             initial={{ scale: 0, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
@@ -426,10 +440,7 @@ export default function ChatBot() {
             whileTap={{ scale: 0.95 }}
             aria-label="Abrir asistente virtual"
           >
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#F5F4F0" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z" />
-            </svg>
-            <span className="absolute inset-0 rounded-full border border-brand-sage/40 animate-ping" />
+            <MessageSquare size={24} aria-hidden="true" />
           </motion.button>
         )}
       </AnimatePresence>
@@ -438,7 +449,11 @@ export default function ChatBot() {
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            className="fixed bottom-6 right-6 z-50 w-[380px] max-w-[calc(100vw-2rem)] h-[560px] max-h-[calc(100dvh-3rem)] rounded-2xl glass-dark shadow-cinematic flex flex-col overflow-hidden"
+            role="region"
+            aria-label="Asistente virtual de GRUPO ARQSA"
+            data-lenis-prevent
+            onKeyDown={(event) => { if (event.key === 'Escape') setIsOpen(false) }}
+            className="fixed bottom-4 right-4 z-50 w-[380px] max-w-[calc(100vw-2rem)] h-[560px] max-h-[calc(100dvh-2rem)] rounded-lg bg-[#181d20] border border-white/20 shadow-cinematic flex flex-col overflow-hidden"
             initial={{ opacity: 0, y: 20, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: 20, scale: 0.95 }}
@@ -451,26 +466,24 @@ export default function ChatBot() {
                   <img src="/logo-icon-96.webp" alt="" width={24} height={24} className="w-6 h-6 object-contain" />
                 </div>
                 <div>
-                  <p className="text-brand-cream text-sm font-semibold">ARQSA Arquitectos</p>
+                  <p className="text-brand-cream text-sm font-semibold">GRUPO ARQSA</p>
                   <div className="flex items-center gap-1.5">
-                    <span className="w-1.5 h-1.5 rounded-full bg-green-400" />
-                    <p className="text-green-400/80 text-[10px]">En línea</p>
+                    <p className="text-brand-sage-light text-xs">Asistente virtual</p>
                   </div>
                 </div>
               </div>
               <button
+                ref={closeRef}
                 onClick={() => setIsOpen(false)}
-                className="w-8 h-8 rounded-full flex items-center justify-center text-brand-sage hover:text-brand-cream hover:bg-white/5 transition-colors"
+                className="w-11 h-11 rounded-lg flex items-center justify-center text-brand-sage-light hover:text-brand-cream hover:bg-white/5 transition-colors"
                 aria-label="Cerrar chat"
               >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">
-                  <path d="M18 6L6 18M6 6l12 12" />
-                </svg>
+                <X size={20} aria-hidden="true" />
               </button>
             </div>
 
             {/* Messages */}
-            <div className="flex-1 overflow-y-auto px-4 py-4 space-y-3">
+            <div role="log" aria-live="polite" className="flex-1 overflow-y-auto overscroll-contain px-4 py-4 space-y-3">
               <AnimatePresence mode="popLayout">
                 {messages.map((msg) => (
                   <motion.div
@@ -481,7 +494,7 @@ export default function ChatBot() {
                     className={`flex ${msg.from === 'user' ? 'justify-end' : 'justify-start'}`}
                   >
                     <div
-                      className={`max-w-[85%] rounded-2xl px-4 py-2.5 text-[13px] leading-relaxed whitespace-pre-line ${
+                      className={`max-w-[90%] break-words rounded-lg px-4 py-2.5 text-sm leading-relaxed whitespace-pre-line ${
                         msg.from === 'bot'
                           ? 'bg-brand-sage/15 text-brand-cream rounded-tl-sm'
                           : 'bg-brand-dark/80 text-brand-cream rounded-tr-sm'
@@ -520,7 +533,7 @@ export default function ChatBot() {
                     <button
                       key={option}
                       onClick={() => handleOption(option)}
-                      className="px-3 py-1.5 text-xs rounded-full border border-brand-sage/30 text-brand-sage hover:bg-brand-sage/15 hover:text-brand-cream hover:border-brand-sage/50 transition-all duration-200"
+                      className="min-h-11 px-3 py-2 text-sm rounded-lg border border-brand-sage/40 text-brand-sage-light hover:bg-brand-sage/15 hover:text-brand-cream transition-colors"
                     >
                       {option}
                     </button>
@@ -528,6 +541,7 @@ export default function ChatBot() {
                 </motion.div>
               )}
 
+              {handoffUrl && <a href={handoffUrl} target="_blank" rel="noopener noreferrer" className="action-primary">Continuar en WhatsApp <ArrowUpRight size={16} /></a>}
               <div ref={messagesEndRef} />
             </div>
 
@@ -544,19 +558,21 @@ export default function ChatBot() {
                 >
                   <input
                     ref={inputRef}
+                    aria-label={inputConfig.placeholder || 'Tu respuesta'}
+                    required
+                    maxLength={2000}
                     type={inputConfig.type}
                     value={inputValue}
                     onChange={(e) => setInputValue(e.target.value)}
                     placeholder={inputConfig.placeholder || 'Escribe tu respuesta...'}
-                    className="flex-1 bg-white/5 border border-white/10 rounded-full px-4 py-2.5 text-sm text-brand-cream placeholder:text-brand-sage/40 focus:outline-none focus:border-brand-sage/40 transition-colors"
+                    className="min-w-0 flex-1 bg-white/5 border border-white/25 rounded-lg px-4 py-2.5 text-base text-brand-cream placeholder:text-brand-sage-light"
                   />
                   <button
                     type="submit"
+                    aria-label="Enviar respuesta"
                     className="w-10 h-10 rounded-full bg-brand-sage/20 flex items-center justify-center text-brand-sage hover:bg-brand-sage/30 hover:text-brand-cream transition-colors shrink-0"
                   >
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M22 2L11 13M22 2l-7 20-4-9-9-4z" />
-                    </svg>
+                    <Send size={18} aria-hidden="true" />
                   </button>
                 </form>
               </motion.div>

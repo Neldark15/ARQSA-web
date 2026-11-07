@@ -6,6 +6,7 @@ import { HelmetProvider } from 'react-helmet-async'
 import App from './App'
 
 export { projects } from './data/projects'
+export { services } from './data/services'
 
 export function render(url: string) {
   return renderToString(

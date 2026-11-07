@@ -1,5 +1,5 @@
-import { useRef, useEffect } from 'react'
-import { gsap, ScrollTrigger } from '@/lib/gsapConfig'
+import { useRef, useLayoutEffect } from 'react'
+import { gsap } from '@/lib/gsapConfig'
 import { useMediaQuery } from '@/hooks/useMediaQuery'
 import SectionHeading from '@/components/ui/SectionHeading'
 import GlassCard from '@/components/ui/GlassCard'
@@ -10,31 +10,28 @@ function DesktopMethodology() {
   const containerRef = useRef<HTMLDivElement>(null)
   const panelsRef = useRef<HTMLDivElement>(null)
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (!containerRef.current || !panelsRef.current) return
     const container = containerRef.current
 
     const panels = panelsRef.current
-    const totalWidth = panels.scrollWidth - window.innerWidth
-
-    const tween = gsap.to(panels, {
-      x: -totalWidth,
-      ease: 'none',
-      scrollTrigger: {
-        trigger: containerRef.current,
-        pin: true,
-        scrub: 1,
-        end: () => `+=${totalWidth}`,
-        anticipatePin: 1,
-      },
-    })
-
-    return () => {
-      tween.kill()
-      ScrollTrigger.getAll().forEach((t) => {
-        if (t.trigger === container) t.kill()
+    const context = gsap.context(() => {
+      gsap.to(panels, {
+        x: () => -(panels.scrollWidth - container.clientWidth),
+        ease: 'none',
+        scrollTrigger: {
+          trigger: container,
+          pin: true,
+          scrub: 1,
+          end: () => `+=${panels.scrollWidth - container.clientWidth}`,
+          invalidateOnRefresh: true,
+          anticipatePin: 1,
+        },
       })
-    }
+    }, container)
+
+    // Remove GSAP's pin wrapper before React removes the desktop component on resize.
+    return () => context.revert()
   }, [])
 
   return (

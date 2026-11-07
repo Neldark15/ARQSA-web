@@ -1,6 +1,8 @@
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useRef } from 'react'
+import { ArrowUpRight, ChevronLeft, ChevronRight, X } from 'lucide-react'
 import type { Project } from '@/data/projects'
 import { responsiveImage, PROJECT_WIDTHS } from '@/lib/images'
+import { containDialogTab } from '@/lib/dialog'
 
 interface Props {
   projects: Project[]
@@ -10,99 +12,59 @@ interface Props {
 
 export default function ProjectViewer({ projects, initialIndex, onClose }: Props) {
   const [currentIndex, setCurrentIndex] = useState(initialIndex)
+  const dialogRef = useRef<HTMLDialogElement>(null)
   const project = projects[currentIndex]
-
-  const goPrev = useCallback(() => {
-    setCurrentIndex((i) => (i > 0 ? i - 1 : projects.length - 1))
-  }, [projects.length])
-
-  const goNext = useCallback(() => {
-    setCurrentIndex((i) => (i < projects.length - 1 ? i + 1 : 0))
-  }, [projects.length])
+  const move = (offset: number) => setCurrentIndex((i) => (i + offset + projects.length) % projects.length)
 
   useEffect(() => {
-    const handleKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') onClose()
-      if (e.key === 'ArrowLeft') goPrev()
-      if (e.key === 'ArrowRight') goNext()
-    }
+    const dialog = dialogRef.current!
+    const opener = document.activeElement as HTMLElement | null
+    const previousOverflow = document.body.style.overflow
     document.body.style.overflow = 'hidden'
-    window.addEventListener('keydown', handleKey)
+    dialog.showModal()
     return () => {
-      document.body.style.overflow = ''
-      window.removeEventListener('keydown', handleKey)
+      dialog.close()
+      document.body.style.overflow = previousOverflow
+      opener?.focus({ preventScroll: true })
     }
-  }, [onClose, goPrev, goNext])
+  }, [])
 
   return (
-    <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-brand-black/95"
-      onClick={onClose}
-      role="dialog"
-      aria-modal="true"
-      aria-label={project.title}
+    <dialog
+      ref={dialogRef}
+      aria-labelledby="project-viewer-title"
+      data-lenis-prevent
+      onCancel={(event) => { event.preventDefault(); onClose() }}
+      onClick={(event) => { if (event.target === event.currentTarget) onClose() }}
+      onKeyDown={(event) => {
+        containDialogTab(event)
+        if (event.key === 'ArrowLeft') { event.preventDefault(); move(-1) }
+        if (event.key === 'ArrowRight') { event.preventDefault(); move(1) }
+      }}
+      className="fixed inset-0 m-auto max-h-[92dvh] w-[calc(100%-2rem)] max-w-5xl overflow-y-auto rounded-lg border border-white/20 bg-[#151719] p-0 text-brand-cream backdrop:bg-black/85"
     >
-      <div
-        className="relative flex flex-col items-center max-w-5xl w-full mx-4 md:mx-8"
-        onClick={(e) => e.stopPropagation()}
-      >
-        {/* Close button */}
-        <button
-          onClick={onClose}
-          aria-label="Cerrar"
-          autoFocus
-          className="absolute -top-12 right-0 w-10 h-10 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-colors"
-        >
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-brand-cream">
-            <path d="M18 6L6 18M6 6l12 12" />
-          </svg>
-        </button>
-
-        {/* Image */}
-        <div className="w-full rounded-2xl overflow-hidden bg-black/50">
-          <img
-            key={project.slug}
-            {...responsiveImage(project.heroImage, PROJECT_WIDTHS)}
-            sizes="(min-width: 1024px) 1024px, 100vw"
-            alt={project.title}
-            className="w-full h-auto max-h-[75vh] object-contain"
-          />
-        </div>
-
-        {/* Bottom bar: prev, title, next */}
-        <div className="flex items-center justify-between w-full mt-6">
-          <button
-            data-action="prev"
-            onClick={goPrev}
-            aria-label="Proyecto anterior"
-            className="w-12 h-12 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-colors"
-          >
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-brand-cream">
-              <path d="M15 18l-6-6 6-6" />
-            </svg>
-          </button>
-
-          <div className="flex flex-col items-center">
-            <h2 className="font-display text-2xl md:text-3xl text-brand-cream">
-              {project.title}
-            </h2>
-            <span className="text-brand-cream/40 text-sm font-body mt-1">
-              {currentIndex + 1} / {projects.length}
-            </span>
+      <div className="p-4 sm:p-6">
+        <div className="mb-4 flex items-start justify-between gap-4">
+          <div className="min-w-0" aria-live="polite">
+            <p className="mb-1 text-xs text-brand-sage-light">{project.categoryLabel} · {currentIndex + 1} / {projects.length}</p>
+            <h2 id="project-viewer-title" className="font-display text-xl sm:text-2xl break-words">{project.title}</h2>
           </div>
-
-          <button
-            data-action="next"
-            onClick={goNext}
-            aria-label="Proyecto siguiente"
-            className="w-12 h-12 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 transition-colors"
-          >
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="text-brand-cream">
-              <path d="M9 18l6-6-6-6" />
-            </svg>
-          </button>
+          <button autoFocus onClick={onClose} aria-label="Cerrar visor" title="Cerrar visor" className="flex size-11 shrink-0 items-center justify-center rounded-lg bg-white/10 hover:bg-white/20"><X size={22} /></button>
+        </div>
+        <img
+          key={project.slug}
+          {...responsiveImage(project.heroImage, PROJECT_WIDTHS)}
+          sizes="(min-width: 1024px) 976px, 100vw"
+          alt={project.title}
+          className="h-[48dvh] w-full object-contain bg-black"
+        />
+        <p className="mt-4 text-sm leading-relaxed text-brand-sage-light">{project.description}</p>
+        <div className="mt-5 grid grid-cols-[44px_minmax(0,1fr)_44px] items-center gap-3">
+          <button onClick={() => move(-1)} aria-label="Proyecto anterior" title="Proyecto anterior" className="flex size-11 items-center justify-center rounded-lg bg-white/10 hover:bg-white/20"><ChevronLeft /></button>
+          <a href={`/proyectos/${project.slug}`} className="flex min-h-11 items-center justify-center gap-2 text-center text-sm underline underline-offset-4">Ver proyecto completo <ArrowUpRight size={16} className="shrink-0" /></a>
+          <button onClick={() => move(1)} aria-label="Proyecto siguiente" title="Proyecto siguiente" className="flex size-11 items-center justify-center rounded-lg bg-white/10 hover:bg-white/20"><ChevronRight /></button>
         </div>
       </div>
-    </div>
+    </dialog>
   )
 }

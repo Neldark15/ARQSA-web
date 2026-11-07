@@ -1,5 +1,7 @@
 export interface Service {
   id: string
+  slug: string
+  deliverables: string[]
   title: string
   description: string
   icon: string // SVG path data
@@ -8,6 +10,8 @@ export interface Service {
 export const services: Service[] = [
   {
     id: 'architectural-design',
+    slug: 'diseno-arquitectonico',
+    deliverables: ['Anteproyecto y concepto de diseño', 'Planos arquitectónicos', 'Renders 3D', 'Especificaciones técnicas y coordinación con ingenierías'],
     title: 'Diseño Arquitectónico',
     description:
       'Creamos proyectos integrales combinando funcionalidad, estética y sostenibilidad, transformando ideas en espacios únicos.',
@@ -15,6 +19,8 @@ export const services: Service[] = [
   },
   {
     id: 'tramitologia',
+    slug: 'permisos-y-tramites',
+    deliverables: ['Permisos de construcción', 'Gestión de factibilidades', 'Revisión de planos', 'Aprobaciones municipales'],
     title: 'Tramitología',
     description:
       'Gestionamos permisos y procesos legales necesarios para asegurar que cada proyecto cumpla con la normativa vigente.',
@@ -22,6 +28,8 @@ export const services: Service[] = [
   },
   {
     id: 'interiorismo',
+    slug: 'interiorismo',
+    deliverables: ['Diseño de mobiliario', 'Paleta de materiales y acabados', 'Iluminación', 'Decoración integral'],
     title: 'Interiorismo',
     description:
       'Diseñamos ambientes interiores que reflejan identidad y estilo, optimizando el confort y la experiencia del usuario.',
@@ -29,6 +37,8 @@ export const services: Service[] = [
   },
   {
     id: 'bim',
+    slug: 'metodologia-bim',
+    deliverables: ['Modelado 3D paramétrico', 'Detección de interferencias', 'Cuantificación', 'Coordinación multidisciplinaria'],
     title: 'Metodología BIM',
     description:
       'Implementamos herramientas digitales que permiten planificar, coordinar y optimizar cada fase del proyecto con precisión.',
@@ -36,6 +46,8 @@ export const services: Service[] = [
   },
   {
     id: 'construction',
+    slug: 'construccion',
+    deliverables: ['Presupuesto detallado', 'Cronograma de obra', 'Control de calidad', 'Coordinación de la entrega'],
     title: 'Construcción',
     description:
       'Ejecutamos obras con altos estándares de calidad, asegurando plazos, costos y resultados confiables.',
@@ -43,6 +55,8 @@ export const services: Service[] = [
   },
   {
     id: 'supervision',
+    slug: 'supervision-de-obra',
+    deliverables: ['Visitas de obra', 'Reportes de avance', 'Control de presupuesto', 'Verificación de calidad'],
     title: 'Supervisión',
     description:
       'Acompañamos cada etapa del proyecto con control técnico y administrativo, garantizando que la obra cumpla lo planificado.',

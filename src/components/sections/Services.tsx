@@ -55,6 +55,7 @@ export default function Services() {
                 <p className="text-brand-sage text-sm leading-relaxed font-body">
                   {service.description}
                 </p>
+                <a href={`/servicios/${service.slug}`} className="mt-5 inline-block text-sm text-brand-cream underline underline-offset-4">Ver {service.title.toLowerCase()}</a>
               </GlassCard>
             </RevealOnScroll>
           ))}

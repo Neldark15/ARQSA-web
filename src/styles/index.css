@@ -164,6 +164,26 @@ body {
   color: #F5F4F0;
 }
 
+@layer components {
+  .action-primary, .action-secondary {
+    @apply inline-flex min-h-12 items-center justify-center gap-2 rounded-lg px-6 py-3 text-sm font-semibold transition-colors;
+    letter-spacing: 0;
+  }
+  .action-primary { @apply bg-brand-cream text-brand-black hover:bg-white; }
+  .action-secondary { @apply border border-white/40 text-white hover:bg-white/15; }
+  .field {
+    @apply block w-full rounded-lg border border-white/25 bg-white/5 px-4 py-3 text-base text-brand-cream placeholder:text-brand-sage-light;
+  }
+  .field-label { @apply mb-2 block text-sm font-medium text-brand-cream; }
+}
+
+:where(a, button, input, select, textarea):focus-visible {
+  outline: 2px solid #B5B7AA;
+  outline-offset: 4px;
+}
+
+section[id] { scroll-margin-top: 96px; }
+
 /* Scrollbar styling */
 ::-webkit-scrollbar {
   width: 6px;

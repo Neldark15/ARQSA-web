@@ -14,7 +14,7 @@ import { webpVariant } from '@/lib/images'
 
 // Host canónico: grupoarqsa.com (sin www) redirige aquí.
 const SITE = 'https://www.grupoarqsa.com'
-const TITLE = 'Arquitectos en El Salvador | Diseño y construcción | ARQSA'
+const TITLE = 'GRUPO ARQSA | Arquitectura y construcción en El Salvador'
 const DESCRIPTION =
   'Firma de arquitectos en San Salvador: diseño de casas, interiorismo, construcción, supervisión y permisos de obra. Mira nuestros proyectos y cotiza por WhatsApp.'
 const OG_IMAGE = `${SITE}/og-arqsa.jpg`
@@ -29,8 +29,8 @@ const jsonLd = {
     {
       '@type': 'HomeAndConstructionBusiness',
       '@id': ORG_ID,
-      name: 'ARQSA Arquitectos Sevillano Aguilar',
-      alternateName: ['ARQSA', 'ARQSA Arquitectos', 'Arquitectos Sevillano Aguilar', 'Grupo ARQSA'],
+      name: 'GRUPO ARQSA',
+      alternateName: ['ARQSA', 'Arquitectos Sevillano Aguilar'],
       description:
         'Firma de arquitectura en San Salvador, El Salvador: diseño arquitectónico, interiorismo, construcción, supervisión de obra y trámite de permisos, con metodología BIM.',
       slogan: 'Tu visión, con forma y diseño',
@@ -41,7 +41,7 @@ const jsonLd = {
         url: `${SITE}/logo-vertical-dark.png`,
         width: 1501,
         height: 1501,
-        caption: 'ARQSA Arquitectos Sevillano Aguilar',
+        caption: 'GRUPO ARQSA',
       },
       image: [OG_IMAGE, ...projects.slice(0, 4).map((p) => `${SITE}${webpVariant(p.heroImage, 1600)}`)],
       telephone: CONTACT.whatsappFormatted,
@@ -61,7 +61,7 @@ const jsonLd = {
         name: 'Servicios de ARQSA',
         itemListElement: services.map((s) => ({
           '@type': 'Offer',
-          itemOffered: { '@type': 'Service', name: s.title, description: s.description, areaServed: 'SV' },
+          itemOffered: { '@type': 'Service', name: s.title, url: `${SITE}/servicios/${s.slug}`, description: s.description, areaServed: 'SV' },
         })),
       },
     },
@@ -78,7 +78,7 @@ const jsonLd = {
       '@type': 'WebSite',
       '@id': `${SITE}/#website`,
       url: `${SITE}/`,
-      name: 'ARQSA Arquitectos',
+      name: 'GRUPO ARQSA',
       alternateName: ['ARQSA', 'Grupo ARQSA'],
       inLanguage: 'es-SV',
       publisher: { '@id': ORG_ID },
@@ -106,18 +106,18 @@ export default function HomePage() {
         <link rel="canonical" href={`${SITE}/`} />
 
         <meta property="og:type" content="website" />
-        <meta property="og:site_name" content="ARQSA Arquitectos" />
+        <meta property="og:site_name" content="GRUPO ARQSA" />
         <meta property="og:locale" content="es_SV" />
         <meta property="og:url" content={`${SITE}/`} />
-        <meta property="og:title" content="ARQSA Arquitectos | Arquitectura y construcción en El Salvador" />
+        <meta property="og:title" content="GRUPO ARQSA | Arquitectura y construcción en El Salvador" />
         <meta property="og:description" content={DESCRIPTION} />
         <meta property="og:image" content={OG_IMAGE} />
         <meta property="og:image:type" content="image/jpeg" />
         <meta property="og:image:width" content="1200" />
         <meta property="og:image:height" content="630" />
-        <meta property="og:image:alt" content="Casa Perdomo, residencia diseñada por ARQSA Arquitectos" />
+        <meta property="og:image:alt" content="Casa Perdomo, residencia diseñada por GRUPO ARQSA" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="ARQSA Arquitectos | Arquitectura y construcción en El Salvador" />
+        <meta name="twitter:title" content="GRUPO ARQSA | Arquitectura y construcción en El Salvador" />
         <meta name="twitter:description" content={DESCRIPTION} />
         <meta name="twitter:image" content={OG_IMAGE} />
 
